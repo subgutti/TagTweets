@@ -8,7 +8,7 @@ Test application :
 2. Launch app on android device
 
 Features :
-1. See recents tweets for a particular hashtag or #
+1. See recents tweets for a particular hashtag
 2. Save the hashtag for future visits
 
 Pending features :
