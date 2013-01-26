@@ -50,7 +50,7 @@ public class StreamFragment extends ListFragment {
         	//load content from web
         	new RequestTask(getActivity()).execute(HashTagSearchHelper.getAbsoluteUrl(getActivity()));
         } else {
-        	//TODO: show no network dialog and finish
+        	((MainSearchActivity) getActivity()).showErrorDialog(ErrorDialogFragment.ERROR_NO_NETWORK);
         }
 	}
 	

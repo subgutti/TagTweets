@@ -15,6 +15,7 @@ public class MainSearchActivity extends FragmentActivity implements EditNameDial
 	private static final String TAG = MainSearchActivity.class.getSimpleName();
 	
 	private static final String FRAGMENT_EDIT_SEARCH = "fragment_edit_search";
+	private static final String FRAGMENT_ERROR = "fragment_error";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,20 @@ public class MainSearchActivity extends FragmentActivity implements EditNameDial
         editNameDialog.show(ft, FRAGMENT_EDIT_SEARCH);
 	}
 
+	public void showErrorDialog (int type) {
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		
+		Fragment old = fm.findFragmentByTag(FRAGMENT_ERROR);
+		if(old != null) {
+			ft.remove(old);
+		}
+	    ft.addToBackStack(null);
+
+	    ErrorDialogFragment errorDialog = new ErrorDialogFragment(type);
+	    errorDialog.show(ft, FRAGMENT_ERROR);
+	}
+	
 	@Override
 	public void onFinishEditDialog(String inputText) {
 		HashTagSearchHelper.setHashTag(this, inputText);

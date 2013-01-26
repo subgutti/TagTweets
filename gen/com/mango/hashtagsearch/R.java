@@ -31,12 +31,18 @@ public final class R {
         public static final int activity_main_search=0x7f060000;
     }
     public static final class string {
+        public static final int alert=0x7f04000c;
         public static final int app_name=0x7f040000;
-        public static final int cancel=0x7f04000a;
+        public static final int cancel=0x7f04000e;
+        public static final int close=0x7f04000b;
         public static final int empty_search=0x7f040003;
+        /**   No network dialog 
+         */
+        public static final int error_dialog_no_network=0x7f040009;
+        public static final int go_to_settings=0x7f04000a;
         public static final int hello_world=0x7f040001;
         public static final int menu_settings=0x7f040002;
-        public static final int ok=0x7f040009;
+        public static final int ok=0x7f04000d;
         public static final int progress=0x7f040006;
         public static final int sample_content=0x7f040005;
         public static final int search_edit_dialog_hint=0x7f040008;
