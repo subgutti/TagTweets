@@ -36,6 +36,9 @@ public class MainSearchActivity extends FragmentActivity implements EditNameDial
 		case R.id.menu_search:
 			showEditSearchDialog();
 			return true;
+		case R.id.menu_refresh:
+			reloadStream();
+			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -69,13 +72,17 @@ public class MainSearchActivity extends FragmentActivity implements EditNameDial
 	    errorDialog.show(ft, FRAGMENT_ERROR);
 	}
 	
+	private void reloadStream () {
+		FragmentManager fm = getSupportFragmentManager();
+		StreamFragment fragment = (StreamFragment) fm.findFragmentByTag("stream_fragment");
+		fragment.checkAndDownloadContent();
+	}
+	
 	@Override
 	public void onFinishEditDialog(String inputText) {
 		HashTagSearchHelper.setHashTag(this, inputText);
 
 		//Reload stream as search tag changed
-		FragmentManager fm = getSupportFragmentManager();
-		StreamFragment fragment = (StreamFragment) fm.findFragmentByTag("stream_fragment");
-		fragment.checkAndDownloadContent();
+		reloadStream();
 	}
 }

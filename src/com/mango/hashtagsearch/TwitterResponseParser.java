@@ -13,7 +13,7 @@ public class TwitterResponseParser {
 	
 	private static final String TAG = TwitterResponseParser.class.getSimpleName();
 	
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	
 private static ArrayList <StreamObject> mStreamObjects = new ArrayList<StreamObject>();
 	

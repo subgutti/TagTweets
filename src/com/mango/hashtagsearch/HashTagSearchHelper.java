@@ -6,19 +6,16 @@ import android.content.SharedPreferences;
 
 public class HashTagSearchHelper {
 
-	private static final String BASE_URL = "http://search.twitter.com/search.json?q=%23";
+	private static final String BASE_URL = "http://search.twitter.com/search.json?page=";
+	private static final String BASE_SEARCH_STRING = "&q=%23";
 
 	private static final String DEFAULT_HASH_TAG = "waystogetoffthephone";
 	
 	private static final String PREF_FILE = "hashtag_discover";
 	private static final String PREF_HASHTAG = "hashtag";
 	
-	public static String getAbsoluteUrl(String relativeUrl) {
-		return BASE_URL + relativeUrl;
-	}
-	
-	public static String getAbsoluteUrl(Context context) {
-		return BASE_URL + getHashTag(context);
+	public static String getAbsoluteUrl(Context context, int pageNum) {
+		return BASE_URL + pageNum + BASE_SEARCH_STRING + getHashTag(context);
 	}
 	
 	public static String getHashTag (Context context) {

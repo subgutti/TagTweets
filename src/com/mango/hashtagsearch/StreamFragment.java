@@ -21,38 +21,101 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 
 public class StreamFragment extends ListFragment {
-
+	
+	private static final String TAG = StreamFragment.class.getSimpleName();
+	private static final boolean DEBUG = false;
+	
 	private StreamAdapter mAdapter;
+	private ArrayList<StreamObject> mStreamObjects = new ArrayList<StreamObject>();
+	
+	private int mCurrentPage = 1;
+	private int mCurrentPos = 0;
+	private boolean mLoadingData = false;
+	
+	private static final int MSG_LOAD_NEXT_PAGE = 0;
+	private Handler mHandler = new Handler () {
+		@Override
+		public void handleMessage(Message msg) {
+			int what = msg.what;
+			
+			switch(what) {
+			case MSG_LOAD_NEXT_PAGE :
+				new RequestTask(getActivity()).execute(HashTagSearchHelper.getAbsoluteUrl(getActivity(), mCurrentPage));
+	        	break;
+			default:
+				break;
+			}
+		}
+	};
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_stream_list, container, false);
 	}
-
+	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
 		checkAndDownloadContent();
+		
+
+		getListView().setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				mCurrentPos = firstVisibleItem;
+				if(DEBUG) Log.d(TAG,"counts : first " + firstVisibleItem + " visible " + visibleItemCount + " totla " + totalItemCount);
+				if(!mLoadingData && !mHandler.hasMessages(MSG_LOAD_NEXT_PAGE)) {
+					int lastDisplayedItem = firstVisibleItem + visibleItemCount;
+					if(visibleItemCount < totalItemCount && lastDisplayedItem == totalItemCount/2) {
+						mHandler.removeMessages(MSG_LOAD_NEXT_PAGE);
+						mHandler.sendEmptyMessage(MSG_LOAD_NEXT_PAGE);
+					}
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void onPause() {
+		getListView().setOnScrollListener(null);
+		
+		super.onPause();
 	}
 
 	public void checkAndDownloadContent () {
+		//clear mAdapter content
+		mStreamObjects.clear();
+		mCurrentPage = 1;
+		
 		ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-        	//load content from web
-        	new RequestTask(getActivity()).execute(HashTagSearchHelper.getAbsoluteUrl(getActivity()));
+        	//load content from base url
+        	new RequestTask(getActivity()).execute(HashTagSearchHelper.getAbsoluteUrl(getActivity(), mCurrentPage));
         } else {
         	((MainSearchActivity) getActivity()).showErrorDialog(ErrorDialogFragment.ERROR_NO_NETWORK);
         }
 	}
+	
+	
 	
 	/**
 	 * this class performs all the work, shows dialog before the work and dismiss it after
@@ -64,19 +127,26 @@ public class StreamFragment extends ListFragment {
 	    
 	    public RequestTask(Context context) {
 	    	mContext = context;
-	        dialog = new ProgressDialog(context);
+	    	
+	    	if(mCurrentPage == 1)
+	    		dialog = new ProgressDialog(context);
 	    }
 
 	    protected void onPreExecute() {
-	        this.dialog.setMessage(mContext.getResources().getString(R.string.progress));
-	        this.dialog.show();
+	    	if(dialog != null) {
+	    		this.dialog.setMessage(mContext.getResources().getString(R.string.progress));
+	    		this.dialog.show();
+	    	}
+	    	mLoadingData = true;
 	    }
-
-	        @Override
+	    
+	    @Override
 	    protected void onPostExecute(final String response) {
-	        if (dialog.isShowing()) {
+	        if (dialog != null && dialog.isShowing()) {
 	            dialog.dismiss();
 	        }
+	        
+	        mLoadingData = false;
 	        
 	        if(TextUtils.isEmpty(response)) {
 	        	mAdapter = null;
@@ -89,11 +159,22 @@ public class StreamFragment extends ListFragment {
 			
 			try {
 				responseObject = new JSONObject(response);
+				if(DEBUG) Log.d(TAG,"JSON OBJECT : " + response);
 				dataArray = responseObject.getJSONArray("results");
 				ArrayList<StreamObject> objects = TwitterResponseParser.parse(dataArray);
-			
-				mAdapter = new StreamAdapter(getActivity(), objects);
+				
+				mStreamObjects.addAll(objects);
+				
+				mAdapter = new StreamAdapter(getActivity(), mStreamObjects);
 				setListAdapter(mAdapter);
+				mAdapter.notifyDataSetChanged();
+				
+				if(mAdapter.getCount() > mCurrentPos)
+					getListView().setSelectionFromTop(mCurrentPos, 0);
+				else
+					getListView().setSelectionFromTop(0, 0);
+					
+				mCurrentPage++;
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
