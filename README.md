@@ -10,7 +10,9 @@ Test application :
 Features :
 1. See recents tweets for a particular hashtag
 2. Save the hashtag for future visits
+3. Show infinite tweets as user scrolls down
 
 Pending features :
-1. Infinite pagination - show as many tweets as requested by user
-2. Allow users to browse the http links
+1. Allow users to browse the http links
+2. Add language support
+
