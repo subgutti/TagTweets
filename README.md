@@ -11,8 +11,9 @@ Features :
 1. See recents tweets for a particular hashtag
 2. Save the hashtag for future visits
 3. Show infinite tweets as user scrolls down
+4. Allow users to browse the http links
 
 Pending features :
-1. Allow users to browse the http links
-2. Add language support
-
+1. Add language support
+2. Show saved tag in bold
+3. Save position during onResume and onPause

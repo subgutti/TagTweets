@@ -15,7 +15,7 @@ public class TwitterResponseParser {
 	
 	private static final boolean DEBUG = false;
 	
-private static ArrayList <StreamObject> mStreamObjects = new ArrayList<StreamObject>();
+	private static ArrayList <StreamObject> mStreamObjects = new ArrayList<StreamObject>();
 	
 	public static ArrayList<StreamObject> parse (JSONArray dataArray) {
 		
