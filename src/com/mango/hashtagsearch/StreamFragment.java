@@ -64,15 +64,18 @@ public class StreamFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_stream_list, container, false);
 	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		checkAndDownloadContent();
+	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		checkAndDownloadContent();
-		
+
 		getListView().setOnScrollListener(new OnScrollListener() {
-			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {}
 			
