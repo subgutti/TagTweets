@@ -16,4 +16,3 @@ Features :
 Pending features :
 1. Add language support
 2. Show saved tag in bold
-3. Save position during onResume and onPause
