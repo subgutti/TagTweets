@@ -9,7 +9,7 @@ public class HashTagSearchHelper {
 	private static final String BASE_URL = "http://search.twitter.com/search.json?page=";
 	private static final String BASE_SEARCH_STRING = "&q=%23";
 
-	private static final String DEFAULT_HASH_TAG = "waystogetoffthephone";
+	private static final String DEFAULT_HASH_TAG = "GenericTweet";
 	
 	private static final String PREF_FILE = "hashtag_discover";
 	private static final String PREF_HASHTAG = "hashtag";

@@ -13,7 +13,7 @@
     
     <!-- Change search hash tag -->
     <string name="search_edit_dialog_title">Set search #tag</string>
-    <string name="search_edit_dialog_hint">e.g waystogetoffthephone</string>
+    <string name="search_edit_dialog_hint">e.g GenericTweet</string>
     
     <!--  No network dialog -->
     <string name="error_dialog_no_network">No network</string>
