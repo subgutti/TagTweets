@@ -15,8 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mango.tagtweets.R;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -46,13 +44,17 @@ public class StreamFragment extends ListFragment {
 	private int mCurrentPos = 0;
 	private boolean mLoadingData = false;
 	
-	private static final int MSG_LOAD_NEXT_PAGE = 0;
+	private static final int MSG_INITIAL_LOAD = 0;
+	private static final int MSG_LOAD_NEXT_PAGE = 1;
 	private Handler mHandler = new Handler () {
 		@Override
 		public void handleMessage(Message msg) {
 			int what = msg.what;
 			
 			switch(what) {
+			case MSG_INITIAL_LOAD :
+				checkAndDownloadContent();
+				break;
 			case MSG_LOAD_NEXT_PAGE :
 				new RequestTask(getActivity()).execute(HashTagSearchHelper.getAbsoluteUrl(getActivity(), mCurrentPage));
 	        	break;
@@ -204,6 +206,9 @@ public class StreamFragment extends ListFragment {
 	            //TODO  unable to load and quit dialog
 	        } catch (IOException e) {
 	            //TODO  unable to load and quit dialog
+	        } catch (Exception e) {
+	        	HashTagSearchHelper.clearHashTag(getActivity());
+	        	mHandler.sendEmptyMessage(MSG_INITIAL_LOAD);
 	        }
 	        return responseString;
 	    }

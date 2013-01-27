@@ -1,14 +1,11 @@
 package com.mango.tagtweets;
 
-import com.mango.tagtweets.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 
 public class ErrorDialogFragment extends DialogFragment {
 	

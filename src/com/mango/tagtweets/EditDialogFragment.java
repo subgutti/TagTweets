@@ -1,29 +1,32 @@
 package com.mango.tagtweets;
 
-import com.mango.tagtweets.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class EditDialogFragment extends DialogFragment {
 	
 	public interface EditNameDialogListener {
-        void onFinishEditDialog(String inputText);
+        void onFinishEditDialog(EditDialogFragment fragment, String inputText);
     }
 
     private EditText mEditText;
-
+    private boolean mAlertDialogShown;
+    private AlertDialog mAlertDialog;
+    
     public EditDialogFragment () {
         // Empty constructor required for DialogFragment
     }
     
-    @Override
+	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -39,18 +42,31 @@ public class EditDialogFragment extends DialogFragment {
         mEditText.setText(tag);
         mEditText.setSelection(tag.length());
         
-        builder.setView(view)
+        builder.setView(view);
         // Set action buttons
-               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int id) {
-                	   // Return input text to activity
-                       EditNameDialogListener activity = (EditNameDialogListener) getActivity();
-                       activity.onFinishEditDialog(mEditText.getText().toString());
-                   }
-               })
-               .setNegativeButton(R.string.cancel, null);   
+        builder.setPositiveButton(R.string.ok, null);
+        builder.setNegativeButton(R.string.cancel, null);
         
-        return builder.create();
-	}
+        mAlertDialog = builder.create();
+        
+        mAlertDialog.setOnShowListener(new OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				if(!mAlertDialogShown) {
+					Button button = mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+					button.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							// Return input text to activity
+			        		EditNameDialogListener activity = (EditNameDialogListener) getActivity();
+			        		activity.onFinishEditDialog(EditDialogFragment.this, mEditText.getText().toString());
+						}
+					});
+				}
+				mAlertDialogShown = true;
+			}
+		});
+        
+        return mAlertDialog;
+	}	
 }

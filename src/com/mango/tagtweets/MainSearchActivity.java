@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.mango.tagtweets.R;
 import com.mango.tagtweets.EditDialogFragment.EditNameDialogListener;
 
 public class MainSearchActivity extends FragmentActivity implements EditNameDialogListener{
@@ -56,7 +56,8 @@ public class MainSearchActivity extends FragmentActivity implements EditNameDial
 	    ft.addToBackStack(null);
 
 	    EditDialogFragment editNameDialog = new EditDialogFragment();
-        editNameDialog.show(ft, FRAGMENT_EDIT_SEARCH);
+	    editNameDialog.setCancelable(false);
+        editNameDialog.show(fm, FRAGMENT_EDIT_SEARCH);
 	}
 
 	public void showErrorDialog (int type) {
@@ -80,10 +81,15 @@ public class MainSearchActivity extends FragmentActivity implements EditNameDial
 	}
 	
 	@Override
-	public void onFinishEditDialog(String inputText) {
-		HashTagSearchHelper.setHashTag(this, inputText);
+	public void onFinishEditDialog(EditDialogFragment fragment, String inputText) {
+		if(HashTagSearchHelper.checkHashTagValidity(this, inputText)) {
+			fragment.dismiss();
 
-		//Reload stream as search tag changed
-		reloadStream();
+			HashTagSearchHelper.setHashTag(this, inputText);
+			//Reload stream as search tag changed
+			reloadStream();
+		} else {
+			Toast.makeText(this, getString(R.string.error_invalid_hashtag), Toast.LENGTH_LONG).show();
+		}
 	}
 }

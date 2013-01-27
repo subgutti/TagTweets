@@ -11,6 +11,8 @@
     
     <string name="progress">Loading content&#8230;</string>
     
+    <string name="hashtag_format">No spaces. Enter combination of (a&#8211;z, A&#8211;Z, 0&#8211;9, _)</string>
+    
     <!-- Stream post -->
     <string name="author_name">- %s</string>
     
@@ -20,7 +22,7 @@
     
     <!--  No network dialog -->
     <string name="error_dialog_no_network">No network</string>
-    
+    <string name="error_invalid_hashtag">Enter a valid hashtag</string>
     <string name="go_to_settings">Wifi Settings</string>
     <string name="close">Close</string>
     
