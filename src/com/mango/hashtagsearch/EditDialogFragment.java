@@ -33,6 +33,10 @@ public class EditDialogFragment extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View view = inflater.inflate(R.layout.fragment_edit_dialog, null);
         mEditText = (EditText) view.findViewById(R.id.input_field);
+        String tag = HashTagSearchHelper.getHashTag(getActivity());
+        mEditText.setText(tag);
+        mEditText.setSelection(tag.length());
+        
         builder.setView(view)
         // Set action buttons
                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

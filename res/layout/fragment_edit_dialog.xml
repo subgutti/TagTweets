@@ -13,6 +13,7 @@
         android:layout_height="wrap_content" 
         android:inputType="text"
         android:singleLine="true"
+        android:focusable="true"
         android:hint="@string/search_edit_dialog_hint"
         android:imeOptions="actionDone" />
 

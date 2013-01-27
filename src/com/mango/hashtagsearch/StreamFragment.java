@@ -64,14 +64,13 @@ public class StreamFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_stream_list, container, false);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		
 		checkAndDownloadContent();
 		
-
 		getListView().setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -83,8 +82,7 @@ public class StreamFragment extends ListFragment {
 				mCurrentPos = firstVisibleItem;
 				if(DEBUG) Log.d(TAG,"counts : first " + firstVisibleItem + " visible " + visibleItemCount + " totla " + totalItemCount);
 				if(!mLoadingData && !mHandler.hasMessages(MSG_LOAD_NEXT_PAGE)) {
-					int lastDisplayedItem = firstVisibleItem + visibleItemCount;
-					if(visibleItemCount < totalItemCount && lastDisplayedItem == totalItemCount/2) {
+					if(visibleItemCount < totalItemCount && firstVisibleItem == totalItemCount - visibleItemCount) {
 						mHandler.removeMessages(MSG_LOAD_NEXT_PAGE);
 						mHandler.sendEmptyMessage(MSG_LOAD_NEXT_PAGE);
 					}
@@ -96,14 +94,14 @@ public class StreamFragment extends ListFragment {
 	@Override
 	public void onPause() {
 		getListView().setOnScrollListener(null);
-		
 		super.onPause();
 	}
 
 	public void checkAndDownloadContent () {
-		//clear mAdapter content
+		//reset variables
 		mStreamObjects.clear();
 		mCurrentPage = 1;
+		mCurrentPos = 0;
 		
 		ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -114,8 +112,6 @@ public class StreamFragment extends ListFragment {
         	((MainSearchActivity) getActivity()).showErrorDialog(ErrorDialogFragment.ERROR_NO_NETWORK);
         }
 	}
-	
-	
 	
 	/**
 	 * this class performs all the work, shows dialog before the work and dismiss it after
