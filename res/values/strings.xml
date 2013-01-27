@@ -11,6 +11,9 @@
     
     <string name="progress">Loading content&#8230;</string>
     
+    <!-- Stream post -->
+    <string name="author_name">- %s</string>
+    
     <!-- Change search hash tag -->
     <string name="search_edit_dialog_title">Set search #tag</string>
     <string name="search_edit_dialog_hint">e.g GenericTweet</string>

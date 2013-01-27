@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dip">
+    android:background="@android:color/transparent"
+    android:padding="8dip">
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/stream_item_background_1"
+	    android:padding="10dip">
+    
+	    <TextView
+	        android:id="@+id/content"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/sample_content"
+	        android:autoLink="web"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	    <TextView
+	        android:id="@+id/signature"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/content"
+	        android:text="@string/unknown"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sample_content"
-        android:autoLink="web"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/signature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/content"
-        android:text="@string/unknown"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-</RelativeLayout>
+</FrameLayout>

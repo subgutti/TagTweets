@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,7 +18,7 @@ public class TwitterResponseParser {
 	
 	private static ArrayList <StreamObject> mStreamObjects = new ArrayList<StreamObject>();
 	
-	public static ArrayList<StreamObject> parse (JSONArray dataArray) {
+	public static ArrayList<StreamObject> parse (Context context, JSONArray dataArray) {
 		
 		if(dataArray == null)
 			return mStreamObjects;
@@ -52,8 +53,10 @@ public class TwitterResponseParser {
 						if(DEBUG) Log.d(TAG,"no author available");
 					}
 					
-					if(!TextUtils.isEmpty(author) && !TextUtils.isEmpty(content))
-						mStreamObjects.add(new StreamObject(content, author));
+					if(!TextUtils.isEmpty(author) && !TextUtils.isEmpty(content)) {
+						String authorName = context.getResources().getString(R.string.author_name, author);
+						mStreamObjects.add(new StreamObject(content, authorName));
+					}
 				}
 				
 				if(DEBUG) Log.d(TAG,"response : content - " + content + " , author - " + author);

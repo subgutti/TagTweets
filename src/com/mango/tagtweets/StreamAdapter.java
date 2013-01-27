@@ -3,10 +3,7 @@ package com.mango.tagtweets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mango.tagtweets.R;
-
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +13,6 @@ import android.widget.TextView;
 public class StreamAdapter extends BaseAdapter {
 	
 	private static final String TAG = StreamAdapter.class.getSimpleName();
-	
-	private String[] mBackgroundColors = new String[] {"#ffffffff","#ffcccccc"};
-	private int mBackgroundColorsLength = mBackgroundColors.length;
 	
 	private ArrayList<StreamObject> mStreamObjects;
 	private Context mContext;
@@ -58,10 +52,6 @@ public class StreamAdapter extends BaseAdapter {
 			holder = (viewHolder)view.getTag();
 		}
 		
-		//Use alternate background colors
-		int colorPos = position % mBackgroundColorsLength;
-	    view.setBackgroundColor(Color.parseColor(mBackgroundColors[colorPos]));
-	    
 		final StreamObject object = mStreamObjects.get(position);
 		
 		TextView authorView = holder.getAuthorView();

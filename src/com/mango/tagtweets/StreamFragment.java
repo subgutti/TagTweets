@@ -162,7 +162,7 @@ public class StreamFragment extends ListFragment {
 				responseObject = new JSONObject(response);
 				if(DEBUG) Log.d(TAG,"JSON OBJECT : " + response);
 				dataArray = responseObject.getJSONArray("results");
-				ArrayList<StreamObject> objects = TwitterResponseParser.parse(dataArray);
+				ArrayList<StreamObject> objects = TwitterResponseParser.parse(getActivity(), dataArray);
 				
 				mStreamObjects.addAll(objects);
 				
