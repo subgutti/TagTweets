@@ -1,4 +1,4 @@
-package com.mango.hashtagsearch;
+package com.mango.tagtweets;
 
 
 public class StreamObject {

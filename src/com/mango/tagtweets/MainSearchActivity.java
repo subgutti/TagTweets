@@ -1,4 +1,4 @@
-package com.mango.hashtagsearch;
+package com.mango.tagtweets;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.mango.hashtagsearch.EditDialogFragment.EditNameDialogListener;
+import com.mango.tagtweets.R;
+import com.mango.tagtweets.EditDialogFragment.EditNameDialogListener;
 
 public class MainSearchActivity extends FragmentActivity implements EditNameDialogListener{
 	

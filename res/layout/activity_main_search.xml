@@ -6,7 +6,7 @@
     tools:context=".MainSearchActivity">
     
     <fragment 
-        android:name="com.mango.hashtagsearch.StreamFragment"
+        android:name="com.mango.tagtweets.StreamFragment"
         android:id="@+id/stream_list_fragment"
         android:tag="stream_fragment"
         android:layout_width="match_parent"

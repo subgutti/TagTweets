@@ -1,7 +1,9 @@
-package com.mango.hashtagsearch;
+package com.mango.tagtweets;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mango.tagtweets.R;
 
 import android.content.Context;
 import android.graphics.Color;

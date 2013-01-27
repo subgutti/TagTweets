@@ -1,4 +1,6 @@
-package com.mango.hashtagsearch;
+package com.mango.tagtweets;
+
+import com.mango.tagtweets.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

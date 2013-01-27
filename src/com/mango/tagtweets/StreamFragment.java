@@ -1,4 +1,4 @@
-package com.mango.hashtagsearch;
+package com.mango.tagtweets;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,6 +14,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.mango.tagtweets.R;
 
 import android.app.ProgressDialog;
 import android.content.Context;
