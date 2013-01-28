@@ -48,6 +48,7 @@ public class StreamAdapter extends BaseAdapter {
 			view.setTag(holder);
 			holder.setAuthor((TextView) view.findViewById(R.id.signature));
 			holder.setContentView((TextView) view.findViewById(R.id.content));
+			holder.setTimeStampView((TextView) view.findViewById(R.id.time));
 		} else {
 			holder = (viewHolder)view.getTag();
 		}
@@ -56,6 +57,7 @@ public class StreamAdapter extends BaseAdapter {
 		
 		TextView authorView = holder.getAuthorView();
 		TextView contentView = holder.getContentView();
+		TextView timeStampView = holder.getTimeStampView();
 		
 		String author = object.getAuthor();
 		if(TextUtils.isEmpty(author))
@@ -63,6 +65,7 @@ public class StreamAdapter extends BaseAdapter {
 		
 		authorView.setText(author);
 		contentView.setText(object.getContent());
+		timeStampView.setText(object.getTimeStamp());
 		
 		return view;
 	}
@@ -70,6 +73,7 @@ public class StreamAdapter extends BaseAdapter {
 	private class viewHolder{
     	private TextView authorView;
     	private TextView contentView;
+    	private TextView timeStampView;
     	
 		public TextView getAuthorView() {
 			return authorView;
@@ -82,6 +86,12 @@ public class StreamAdapter extends BaseAdapter {
 		}
 		public void setContentView(TextView content) {
 			this.contentView = content;
+		}
+		public TextView getTimeStampView() {
+			return timeStampView;
+		}
+		public void setTimeStampView(TextView timeStamp) {
+			this.timeStampView = timeStamp;
 		}
 	}
 }

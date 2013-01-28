@@ -24,9 +24,18 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentRight="true"
-	        android:layout_below="@+id/content"
+	        android:layout_below="@id/content"
 	        android:text="@string/unknown"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/signature"
+            android:text="@string/unknown"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
 

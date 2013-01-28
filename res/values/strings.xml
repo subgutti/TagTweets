@@ -15,6 +15,23 @@
     
     <!-- Stream post -->
     <string name="author_name">- %s</string>
+    <string name="time_moments_ago">moments ago</string>
+    <string name="time_long_back">long back</string>
+    
+    <plurals name="time_minutes">
+        <item quantity="one">1 min ago</item>
+        <item quantity="other">%d mins ago</item>
+    </plurals>
+    
+    <plurals name="time_hours">
+        <item quantity="one">1 hour ago</item>
+        <item quantity="other">%d hours ago</item>
+    </plurals>
+    
+    <plurals name="time_days">
+        <item quantity="one">1 day ago</item>
+        <item quantity="other">%d days ago</item>
+    </plurals>
     
     <!-- Change search hash tag -->
     <string name="search_edit_dialog_title">Set search #tag</string>

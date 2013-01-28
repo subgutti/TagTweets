@@ -16,6 +16,10 @@ public class TwitterResponseParser {
 	
 	private static final boolean DEBUG = false;
 	
+	private static final String JSON_CONTENT="text";
+	private static final String JSON_AUTHOR="from_user_name";
+	private static final String JSON_TIMESTAMP="created_at";
+	
 	private static ArrayList <StreamObject> mStreamObjects = new ArrayList<StreamObject>();
 	
 	public static ArrayList<StreamObject> parse (Context context, JSONArray dataArray) {
@@ -35,11 +39,12 @@ public class TwitterResponseParser {
 				
 				String content = "";
 				String author = "";
+				String time = "";
 				
 				if(data != null) {
 					//Get content
 					try {
-						content = data.getString("text");
+						content = data.getString(JSON_CONTENT);
 					} catch (JSONException e) {
 						content = "";
 						if(DEBUG) Log.d(TAG,"no content available");
@@ -47,15 +52,24 @@ public class TwitterResponseParser {
 					
 					//Get author
 					try {
-						author = data.getString("from_user_name");
+						author = data.getString(JSON_AUTHOR);
 					} catch (JSONException e) {
 						author = "";
 						if(DEBUG) Log.d(TAG,"no author available");
 					}
 					
+					//Get time stamp
+					try {
+						time = data.getString(JSON_TIMESTAMP);
+					} catch (JSONException e) {
+						time = "";
+						if(DEBUG) Log.d(TAG,"no time stamp available");
+					}
+					
 					if(!TextUtils.isEmpty(author) && !TextUtils.isEmpty(content)) {
 						String authorName = context.getResources().getString(R.string.author_name, author);
-						mStreamObjects.add(new StreamObject(content, authorName));
+						String timeStr = HashTagSearchHelper.getFormattedTime(context, time);
+						mStreamObjects.add(new StreamObject(content, authorName, timeStr));
 					}
 				}
 				
