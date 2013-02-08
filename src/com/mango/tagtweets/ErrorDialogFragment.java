@@ -59,6 +59,15 @@ public class ErrorDialogFragment extends DialogFragment {
 		}
 	}
 	
+	private int getMessage () {
+		switch(mType) {
+		case ERROR_NO_NETWORK :
+			return R.string.need_data_connection;
+		default:
+			return R.string.alert;
+		}
+	}
+	
 	private int getPositiveButtonText () {
 		switch(mType) {
 		case ERROR_NO_NETWORK :
@@ -83,6 +92,7 @@ public class ErrorDialogFragment extends DialogFragment {
     	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         
         builder.setTitle(getTitle());
+        builder.setMessage(getMessage());
         builder.setPositiveButton(getPositiveButtonText(), mPositiveButtonListener);
         builder.setNegativeButton(getNegativeButtonText(), mNegativeButtonListener);
         

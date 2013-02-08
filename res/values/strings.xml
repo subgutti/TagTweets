@@ -39,6 +39,7 @@
     
     <!--  No network dialog -->
     <string name="error_dialog_no_network">No network</string>
+    <string name="need_data_connection">Data connection is required to load stream</string>
     <string name="error_invalid_hashtag">Enter a valid hashtag</string>
     <string name="go_to_settings">Wifi Settings</string>
     <string name="close">Close</string>
