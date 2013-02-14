@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.mango.tagtweets.MainSearchActivity"
+            android:configChanges="mcc|mnc|orientation|uiMode|keyboardHidden"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

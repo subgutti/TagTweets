@@ -39,10 +39,12 @@ public class StreamFragment extends ListFragment {
 	
 	private StreamAdapter mAdapter;
 	private ArrayList<StreamObject> mStreamObjects = new ArrayList<StreamObject>();
-	
+
+    private ProgressDialog mProgressDialog;
 	private int mCurrentPage = 1;
 	private int mCurrentPos = 0;
 	private boolean mLoadingData = false;
+	private RequestTask mStreamRequestAsyncTask;
 	
 	private static final int MSG_INITIAL_LOAD = 0;
 	private static final int MSG_LOAD_NEXT_PAGE = 1;
@@ -72,6 +74,9 @@ public class StreamFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+		mProgressDialog = new ProgressDialog(getActivity());
+		mProgressDialog.setMessage(getActivity().getResources().getString(R.string.progress));
 		checkAndDownloadContent();
 	}
 
@@ -101,6 +106,14 @@ public class StreamFragment extends ListFragment {
 	@Override
 	public void onPause() {
 		getListView().setOnScrollListener(null);
+		
+		if (mProgressDialog != null && mProgressDialog.isShowing()) {
+        	mProgressDialog.dismiss();
+        }
+		
+		if(mStreamRequestAsyncTask != null)
+			mStreamRequestAsyncTask.cancel(true);
+		
 		super.onPause();
 	}
 
@@ -114,7 +127,8 @@ public class StreamFragment extends ListFragment {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
         	//load content from base url
-        	new RequestTask(getActivity()).execute(HashTagSearchHelper.getAbsoluteUrl(getActivity(), mCurrentPage));
+        	mStreamRequestAsyncTask = new RequestTask(getActivity());
+        	mStreamRequestAsyncTask.execute(HashTagSearchHelper.getAbsoluteUrl(getActivity(), mCurrentPage));
         } else {
         	((MainSearchActivity) getActivity()).showErrorDialog(ErrorDialogFragment.ERROR_NO_NETWORK);
         }
@@ -125,28 +139,23 @@ public class StreamFragment extends ListFragment {
 	 */
 	public class RequestTask extends AsyncTask<String, Void, String> {
 
-	    private ProgressDialog dialog;
 	    private Context mContext;
 	    
 	    public RequestTask(Context context) {
 	    	mContext = context;
-	    	
-	    	if(mCurrentPage == 1)
-	    		dialog = new ProgressDialog(context);
 	    }
 
 	    protected void onPreExecute() {
-	    	if(dialog != null) {
-	    		this.dialog.setMessage(mContext.getResources().getString(R.string.progress));
-	    		this.dialog.show();
+	    	if(mProgressDialog != null && mCurrentPage == 1) {
+	    		mProgressDialog.show();
 	    	}
 	    	mLoadingData = true;
 	    }
 	    
 	    @Override
 	    protected void onPostExecute(final String response) {
-	        if (dialog != null && dialog.isShowing()) {
-	            dialog.dismiss();
+	        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+	        	mProgressDialog.dismiss();
 	        }
 	        
 	        mLoadingData = false;
@@ -164,10 +173,15 @@ public class StreamFragment extends ListFragment {
 				responseObject = new JSONObject(response);
 				if(DEBUG) Log.d(TAG,"JSON OBJECT : " + response);
 				dataArray = responseObject.getJSONArray("results");
-				ArrayList<StreamObject> objects = TwitterResponseParser.parse(getActivity(), dataArray);
 				
+				if(getActivity() == null)
+					return;
+				
+				ArrayList<StreamObject> objects = TwitterResponseParser.parse(getActivity(), dataArray);
 				mStreamObjects.addAll(objects);
 				
+				if(getActivity() == null)
+					return;
 				mAdapter = new StreamAdapter(getActivity(), mStreamObjects);
 				setListAdapter(mAdapter);
 				mAdapter.notifyDataSetChanged();
@@ -190,8 +204,12 @@ public class StreamFragment extends ListFragment {
 	        HttpResponse response;
 	        String responseString = null;
 	        try {
-	            response = httpclient.execute(new HttpGet(uri[0]));
-	            StatusLine statusLine = response.getStatusLine();
+	        	if(isCancelled())
+	        		return "";
+	        	response = httpclient.execute(new HttpGet(uri[0]));
+	        	if(isCancelled())
+	        		return "";
+	        	StatusLine statusLine = response.getStatusLine();
 	            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
 	                ByteArrayOutputStream out = new ByteArrayOutputStream();
 	                response.getEntity().writeTo(out);
